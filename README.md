@@ -1,72 +1,150 @@
-# Bank Transactions Analysis
+# Bank Transactions Analysis System
 
-Приложение для анализа банковских операций из Excel-файла. Генерирует JSON-данные для веб-страниц, формирует отчеты и предоставляет различные сервисы для анализа транзакций.
+## Описание проекта
 
-## Функциональности
+Система для анализа банковских транзакций с возможностью:
+- Просмотра статистики расходов
+- Поиска транзакций
+- Анализа кэшбэка
+- Формирования отчетов
+- Визуализации данных на главной странице
 
-### Веб-страницы
-- Главная страница с обзором транзакций, курсами валют и ценами акций
-- Страница событий с анализом расходов и поступлений
+## Технологии
 
-### Сервисы
-- Анализ выгодных категорий для кешбэка
-- Расчет сбережений для инвесткопилки
-- Поиск транзакций (простой, по телефонным номерам, переводам физлицам)
-
-### Отчеты
-- Траты по категориям
-- Траты по дням недели
-- Траты в рабочие/выходные дни
+- Python 3.13
+- Pandas (для работы с данными)
+- OpenPyXL (для чтения Excel файлов)
+- Pytest (для тестирования)
+- Mypy (для проверки типов)
+- Flake8 (для проверки стиля кода)
 
 ## Установка
 
-1. Клонируйте репозиторий:
-   ```bash
-   git clone https://github.com/yourusername/bank-transactions-analysis.git
-   cd bank-transactions-analysis
-   ```
+1. Клонировать репозиторий:
+```bash
+git clone https://github.com/yourusername/bank-transactions-analysis.git
+cd bank-transactions-analysis
+```
 
-2. Установите зависимости:
-   ```bash
-   poetry install
-   ```
+2. Установить зависимости:
+```bash
+pip install poetry
+poetry install
+```
 
-3. Создайте файл `.env` на основе `.env_template`
+3. Создать файл `.env` на основе `.env.template`:
+```bash
+cp .env.template .env
+```
 
-4. Поместите файл с транзакциями в `data/operations.xlsx`
+## Структура проекта
 
-5. Создайте файл `user_settings.json` с настройками валют и акций
+```
+bank-transactions-analysis/
+├── data/
+│ └── operations.xlsx - файл с транзакциями
+├── src/
+│ ├── __init__.py - основной модуль
+│ ├── config.py - конфигурация
+│ ├── main.py - точка входа
+│ ├── reports.py - отчеты
+│ ├── services.py - сервисы
+│ ├── utils.py - утилиты
+│ └── views.py - представления
+├── tests/
+│ ├── test_reports.py
+│ ├── test_services.py
+│ ├── test_utils.py
+│ └── test_views.py
+├── .env.template - шаблон конфига
+├── pyproject.toml - зависимости
+└── README.md - документация
+```
 
-## Использование
+## Основные функции
 
-Запустите основную функцию для демонстрации всех возможностей:
+### Отчеты (`reports.py`)
+- `spending_by_category()` - расходы по категориям
+- `spending_by_weekday()` - расходы по дням недели
+- `spending_by_workday()` - сравнение расходов в будни/выходные
+
+### Сервисы (`services.py`)
+- `profitable_cashback_categories()` - категории с максимальным кэшбэком
+- `investment_bank()` - расчет инвестиционных накоплений
+- `simple_search()` - поиск транзакций по описанию
+- `phone_number_search()` - поиск транзакций с номерами телефонов
+- `person_transfers_search()` - поиск переводов между физлицами
+
+### Представления (`views.py`)
+- `home_page()` - данные для главной страницы
+- `events_page()` - данные страницы событий
+
+## Запуск
+
+1. Запуск основного скрипта:
 ```bash
 poetry run python src/main.py
 ```
 
-Или импортируйте нужные модули в своем коде:
+2. Запуск тестов:
+```bash
+poetry run pytest --cov=src/
+```
+
+3. Проверка типов:
+```bash
+poetry run mypy src/ tests/
+```
+
+4. Проверка стиля:
+```bash
+poetry run flake8 src/ tests/
+```
+
+## Примеры использования
+
+### Получение данных для главной страницы
 ```python
-from src.views import home_page, events_page
-from src.services import profitable_cashback_categories
+from src.views import home_page
+
+data = home_page("2023-05-15 14:30:00")
+print(data)
+```
+
+### Анализ расходов по категориям
+```python
 from src.reports import spending_by_category
+from src.utils import load_transactions
+
+df = load_transactions()
+result = spending_by_category(df, "Супермаркеты")
+print(result)
+```
+
+### Поиск переводов между физлицами
+```python
+from src.services import person_transfers_search
+from src.utils import load_transactions
+
+transactions = load_transactions().to_dict('records')
+result = person_transfers_search(transactions)
+print(result)
 ```
 
 ## Тестирование
+
+Основные тесты:
+
+- Модульные тесты для всех функций
+- Тесты обработки ошибок
+- Тесты граничных случаев
+- Интеграционные тесты для главных компонентов
+
+Запуск тестов с покрытием:
 ```bash
-poetry run pytest --cov=src
+pytest --cov=src/ --cov-report=html
 ```
 
 ## Лицензия
-MIT
-```
 
-## Заключение
-
-Этот проект представляет собой полноценное приложение для анализа банковских транзакций с:
-
-1. Четкой структурой проекта
-2. Полноценной документацией
-3. Тестами с покрытием >80%
-4. Поддержкой линтеров и type checking
-5. Различными модулями для разных аспектов функциональности
-6. Примером CI/CD конфигурации
+MIT License
