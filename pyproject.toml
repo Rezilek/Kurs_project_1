@@ -28,3 +28,18 @@ types-pytz = "^2023.3.1"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 119
+exclude = ".git,__pycache__,venv,.venv"
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = ".venv/.*"
+
+[mypy-pandas.'*']
+ignore_errors = true

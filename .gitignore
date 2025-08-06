@@ -54,3 +54,4 @@ __pycache__/
    *.sage.py
    *.csv
    *.xlsx
+   echo ".env" >> .gitignore
