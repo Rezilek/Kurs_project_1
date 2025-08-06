@@ -148,3 +148,9 @@ pytest --cov=src/ --cov-report=html
 ## Лицензия
 
 MIT License
+
+## Контакты
+
+**Автор:** Резиля Столярова  
+**Email:** rezilek5177@gmail.com  
+**GitHub:** [Rezilek](https://github.com/Rezilek)
