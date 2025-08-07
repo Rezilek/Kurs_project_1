@@ -2,25 +2,47 @@ import json
 import logging
 from datetime import datetime
 from functools import wraps
-from typing import Callable, Optional, Dict, Any, TypeVar, Union
-import pandas as pd
+from typing import Any, Callable, Dict, Optional, TypeVar
+
 from pandas import DataFrame
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-T = TypeVar('T', bound=Any)
+T = TypeVar("T", bound=Any)
 
 
-def report_decorator(filename: Optional[str] = None) -> Callable[[Callable[..., T]], Callable[..., T]]:
+def report_decorator(
+    filename: Optional[str] = None,
+) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """Декоратор для сохранения отчетов"""
+
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> T:
-            result = func(*args, **kwargs)
-            # ... остальной код
-            return result
+            try:
+                result = func(*args, **kwargs)
+
+                if filename:
+                    report_data = {
+                        "function": func.__name__,
+                        "timestamp": datetime.now().isoformat(),
+                        "args": str(args),
+                        "kwargs": str(kwargs),
+                        "result": str(result),
+                    }
+
+                    with open(filename, "a", encoding="utf-8") as f:
+                        json.dump(report_data, f, ensure_ascii=False)
+                        f.write("\n")
+
+                return result
+            except Exception as e:
+                logger.error(f"Ошибка в {func.__name__}: {e}")
+                raise
+
         return wrapper
+
     return decorator
 
 
@@ -37,7 +59,10 @@ def spending_by_category(transactions: DataFrame, category: str) -> Dict[str, fl
         Словарь {дата: сумма}
     """
     try:
-        if "Категория" not in transactions.columns or "Дата операции" not in transactions.columns:
+        if (
+            "Категория" not in transactions.columns
+            or "Дата операции" not in transactions.columns
+        ):
             return {}
 
         filtered = transactions[transactions["Категория"] == category]
