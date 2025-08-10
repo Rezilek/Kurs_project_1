@@ -54,3 +54,6 @@ __pycache__/
    *.sage.py
    *.csv
    *.xlsx
+   echo "*.whl" >> .gitignore
+   echo ".env" >> .gitignore
+   echo ".idea/" >> .gitignore

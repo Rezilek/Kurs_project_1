@@ -12,11 +12,11 @@
 ## Технологии
 
 - Python 3.13
-- Pandas (для работы с данными)
-- OpenPyXL (для чтения Excel файлов)
-- Pytest (для тестирования)
-- Mypy (для проверки типов)
-- Flake8 (для проверки стиля кода)
+- Pandas 2.2.0 (для работы с данными)
+- OpenPyXL 3.0.9 (для чтения Excel файлов)
+- Pytest 7.4.0 (для тестирования)
+- Mypy 1.10.0 (для проверки типов)
+- Flake8 6.0.0 (для проверки стиля кода)
 
 ## Установка
 
@@ -46,7 +46,7 @@ bank-transactions-analysis/
 ├── src/
 │ ├── __init__.py - основной модуль
 │ ├── config.py - конфигурация
-│ ├── main.py - точка входа
+
 │ ├── reports.py - отчеты
 │ ├── services.py - сервисы
 │ ├── utils.py - утилиты
@@ -57,6 +57,7 @@ bank-transactions-analysis/
 │ ├── test_utils.py
 │ └── test_views.py
 ├── .env.template - шаблон конфига
+├── main.py - точка входа
 ├── pyproject.toml - зависимости
 └── README.md - документация
 ```
@@ -83,12 +84,12 @@ bank-transactions-analysis/
 
 1. Запуск основного скрипта:
 ```bash
-poetry run python src/main.py
+poetry run python main.py
 ```
 
 2. Запуск тестов:
 ```bash
-poetry run pytest --cov=src/
+poetry run pytest --cov=src/ --cov-report=html
 ```
 
 3. Проверка типов:

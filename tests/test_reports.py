@@ -1,25 +1,26 @@
-import pytest
 import pandas as pd
-from datetime import datetime
-from src.reports import (
-    spending_by_category,
-    spending_by_weekday,
-    spending_by_workday
-)
+import pytest
+
+from src.reports import (spending_by_category, spending_by_weekday,
+                         spending_by_workday)
 
 
 @pytest.fixture
 def sample_transactions() -> pd.DataFrame:
     """Тестовые данные транзакций"""
-    return pd.DataFrame({
-        "Дата операции": pd.to_datetime([
-            "2023-05-15",  # Понедельник
-            "2023-05-16",  # Вторник
-            "2023-05-20"  # Суббота
-        ]),
-        "Категория": ["Супермаркеты", "Услуги", "Развлечения"],
-        "Сумма операции": [-1500.50, -2500.00, -3000.00]
-    })
+    return pd.DataFrame(
+        {
+            "Дата операции": pd.to_datetime(
+                [
+                    "2023-05-15",  # Понедельник
+                    "2023-05-16",  # Вторник
+                    "2023-05-20",  # Суббота
+                ]
+            ),
+            "Категория": ["Супермаркеты", "Услуги", "Развлечения"],
+            "Сумма операции": [-1500.50, -2500.00, -3000.00],
+        }
+    )
 
 
 def test_spending_by_category(sample_transactions: pd.DataFrame) -> None:

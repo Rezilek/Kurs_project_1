@@ -1,6 +1,6 @@
 from datetime import datetime
-from unittest.mock import Mock
 from typing import Any, Dict
+from unittest.mock import Mock
 
 import pandas as pd
 import pytest
